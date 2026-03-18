@@ -54,4 +54,4 @@ The design principle: if your system can prove that its recovery bandwidth fits 
 
 Shutdown is recoverable. Silent cascade is not.
 
-The full framework — recovery invariant, gain matrix derivations, stability proofs, and two more case studies — is in the paper: [*Don't Let Your System Decide It's Dead*](https://doi.org/10.5281/zenodo.19069194). The companion code (MATLAB/Simulink models that formalize and verify every claim) is on [GitHub](https://github.com/aalpar/failuredecider).
+The full framework — recovery invariant, gain matrix derivations, stability proofs, and two more case studies — is in the paper: [*Don't Let Your System Decide It's Dead*](https://doi.org/10.5281/zenodo.19101786). The companion code (MATLAB/Simulink models that formalize and verify every claim) is on [GitHub](https://github.com/aalpar/failuredecider).
