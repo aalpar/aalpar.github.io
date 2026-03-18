@@ -1,4 +1,4 @@
-# Sandboxing Is a Language Property, Not a Feature
+# You Can't Sandbox Ambient Authority
 
 *Why embedded scripting sandboxes keep getting bypassed — and what the lambda calculus[^lambda-calculus] got right in 1941.*
 
