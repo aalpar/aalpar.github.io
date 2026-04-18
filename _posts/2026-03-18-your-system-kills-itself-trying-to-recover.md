@@ -32,7 +32,7 @@ Every page fault consumes disk I/O. Disk saturation blocks processes. Blocked pr
 
 Swap's feedback grows with load — a smooth slide into failure. Cassandra's is a step function: zero gain below a threshold, catastrophic above it.
 
-Cassandra's hinted handoff stores writes destined for a down node and replays them when it returns. Each replayed hint costs about one write — cheap in isolation. But hints accumulate linearly during the outage. A 10-minute failure at 100 Mbps per node produces roughly 7 GB of hints. At the default 1024 kbps throttle, that's about two hours of replay.
+Cassandra's hinted handoff stores writes destined for a down node and replays them when it returns. Each replayed hint costs about one write — cheap in isolation. But hints accumulate linearly during the outage. A 10-minute failure at 100 Mbps per node produces roughly 7 GB of hints. At the default 1024 KB/s throttle, that's about two hours of replay.
 
 That's the gentle version. Here's the cliff.
 
@@ -48,10 +48,10 @@ The contrast with swap matters: swap's boundary is smooth — you slide into thr
 
 These aren't three separate bugs. They're the same stability condition: does the recovery action amplify the failure, or contract it?
 
-TCP contracts — each retry reduces congestion. Unconditionally stable. Swap and Cassandra amplify past a threshold, and both thresholds are closed-form functions of measurable parameters: disk IOPS, access rates, queue depths, working set sizes. A formal test — the spectral radius of a gain matrix — computes this boundary exactly for any system. TCP passes unconditionally. Swap and Cassandra pass until they don't.
+TCP contracts — each retry reduces congestion. Unconditionally stable. Swap and Cassandra amplify past a threshold, and both thresholds are closed-form functions of measurable parameters: disk IOPS, access rates, queue depths, working set sizes. A formal test — the spectral radius of a gain matrix — identifies this boundary for any system. TCP passes unconditionally. Swap and Cassandra pass until they don't.
 
 The design principle: if your system can prove that its recovery bandwidth fits within available headroom, automate. If it cannot, emit state and shut down. Recover offline, where production load is zero and the bandwidth constraint is trivially satisfied.
 
 Shutdown is recoverable. Silent cascade is not.
 
-The full framework — recovery invariant, gain matrix derivations, stability proofs, and two more case studies — is in the paper: [*Don't Let Your System Decide It's Dead*](https://doi.org/10.5281/zenodo.19101786). The companion code (MATLAB/Simulink models that formalize and verify every claim) is on [GitHub](https://github.com/aalpar/failuredecider).
+The full framework — recovery invariant, gain matrix derivations, stability proofs, and a fourth case study (the OOM killer) — is in the paper: [*Don't Let Your System Decide It's Dead*](https://doi.org/10.5281/zenodo.19101786). The companion code (MATLAB/Simulink models that formalize and verify every claim) is on [GitHub](https://github.com/aalpar/failuredecider).
